@@ -1,3 +1,9 @@
+<!-- default file list -->
+*Files to look at*:
+
+* [MainWindow.xaml](./CS/DXPivotGrid_MultipleCustomTotals/MainWindow.xaml) (VB: [MainWindow.xaml](./VB/DXPivotGrid_MultipleCustomTotals/MainWindow.xaml))
+* [MainWindow.xaml.cs](./CS/DXPivotGrid_MultipleCustomTotals/MainWindow.xaml.cs) (VB: [MainWindow.xaml](./VB/DXPivotGrid_MultipleCustomTotals/MainWindow.xaml))
+<!-- default file list end -->
 # How to calculate multiple Custom Totals with SummaryType set to Custom
 
 
