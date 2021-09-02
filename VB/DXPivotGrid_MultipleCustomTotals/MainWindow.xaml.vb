@@ -1,5 +1,4 @@
-﻿Imports Microsoft.VisualBasic
-Imports System.Windows
+﻿Imports System.Windows
 Imports DXPivotGrid_MultipleCustomTotals.DataSet1TableAdapters
 Imports DevExpress.Xpf.PivotGrid
 Imports System.Collections
@@ -7,6 +6,7 @@ Imports System.Collections
 Namespace DXPivotGrid_MultipleCustomTotals
 	Partial Public Class MainWindow
 		Inherits Window
+
 		Private salesPersonDataAdapter As New SalesPersonTableAdapter()
 		Public Sub New()
 			InitializeComponent()
@@ -20,13 +20,14 @@ Namespace DXPivotGrid_MultipleCustomTotals
 			medianCustomTotal.SummaryType = FieldSummaryType.Custom
 
 			' Specifies a unique PivotGridCustomTotal.Tag property value 
-			' that will be used to distinguish between two Custom Total rows.
+			' that will be used to distinguish between two Custom Totals.
 			medianCustomTotal.Tag = "Median"
 
-			' Specifies formatting settings that will be used to display Custom Total row headers.
+			' Specifies formatting settings that will be used to display 
+			' Custom Total column/row headers.
 			medianCustomTotal.Format = "{0} Median"
 
-			' Adds the Median Custom Total row for the Category Name field.
+			' Adds the Median Custom Total for the Sales Person field.
 			fieldSalesPerson.CustomTotals.Add(medianCustomTotal)
 
 
@@ -35,13 +36,14 @@ Namespace DXPivotGrid_MultipleCustomTotals
 			quartileCustomTotal.SummaryType = FieldSummaryType.Custom
 
 			' Specifies a unique PivotGridCustomTotal.Tag property value 
-			' that will be used to distinguish between two Custom Total rows.
+			' that will be used to distinguish between two Custom Totals.
 			quartileCustomTotal.Tag = "Quartiles"
 
-			' Specifies formatting settings that will be used to display Custom Total row headers.
+			' Specifies formatting settings that will be used to display 
+			' Custom Total column/row headers.
 			quartileCustomTotal.Format = "{0} Quartiles"
 
-			' Adds the Quartiles Custom Total row for the Category Name field.
+			' Adds the Quartiles Custom Total for the Sales Person field.
 			fieldSalesPerson.CustomTotals.Add(quartileCustomTotal)
 
 
@@ -53,9 +55,7 @@ Namespace DXPivotGrid_MultipleCustomTotals
 		' Handles the CustomCellValue event. 
 		' Fires for each data cell. If the processed cell is a Custom Total,
 		' provides an appropriate Custom Total value.
-        Private Sub pivotGridControl1_CustomCellValue(ByVal sender As Object, _
-                                                      ByVal e As PivotCellValueEventArgs) _
-                                                      Handles pivotGridControl1.CustomCellValue
+		Private Sub pivotGridControl1_CustomCellValue(ByVal sender As Object, ByVal e As PivotCellValueEventArgs)
 
 			' Exits if the processed cell does not belong to a Custom Total.
 			If e.ColumnCustomTotal Is Nothing AndAlso e.RowCustomTotal Is Nothing Then
@@ -75,9 +75,7 @@ Namespace DXPivotGrid_MultipleCustomTotals
 
 		' Returns the Custom Total name.
 		Private Function GetCustomTotalName(ByVal e As PivotCellValueEventArgs) As String
-            Return If(e.ColumnCustomTotal IsNot Nothing, _
-                      e.ColumnCustomTotal.Tag.ToString(), _
-                      e.RowCustomTotal.Tag.ToString())
+			Return If(e.ColumnCustomTotal IsNot Nothing, e.ColumnCustomTotal.Tag.ToString(), e.RowCustomTotal.Tag.ToString())
 		End Function
 
 		' Returns a list of summary values against which
@@ -106,8 +104,7 @@ Namespace DXPivotGrid_MultipleCustomTotals
 		End Function
 
 		' Returns the Custom Total value by an array of summary values.
-        Private Function GetCustomTotalValue(ByVal values As ArrayList, _
-                                             ByVal customTotalName As String) As Object
+		Private Function GetCustomTotalValue(ByVal values As ArrayList, ByVal customTotalName As String) As Object
 
 			' Returns a null value if the provided array is empty.
 			If values.Count = 0 Then
@@ -133,9 +130,9 @@ Namespace DXPivotGrid_MultipleCustomTotals
 		' Calculates a median for the specified sorted sample.
 		Private Function GetMedian(ByVal values As ArrayList) As Decimal
 			If (values.Count Mod 2) = 0 Then
-                Return CLng(CDec(values(values.Count \ 2 - 1)) + CDec(values(values.Count \ 2))) \ 2
+				Return (DirectCast(values(values.Count \ 2 - 1), Decimal) + DirectCast(values(values.Count \ 2), Decimal)) / 2
 			Else
-                Return CDec(values(values.Count \ 2))
+				Return DirectCast(values(values.Count \ 2), Decimal)
 			End If
 		End Function
 
@@ -145,15 +142,13 @@ Namespace DXPivotGrid_MultipleCustomTotals
 			Dim part1 As New ArrayList()
 			Dim part2 As New ArrayList()
 			If (values.Count Mod 2) = 0 Then
-                part1 = values.GetRange(0, values.Count \ 2)
-                part2 = values.GetRange(values.Count \ 2, values.Count \ 2)
+				part1 = values.GetRange(0, values.Count \ 2)
+				part2 = values.GetRange(values.Count \ 2, values.Count \ 2)
 			Else
-                part1 = values.GetRange(0, values.Count \ 2 + 1)
-                part2 = values.GetRange(values.Count \ 2, values.Count \ 2 + 1)
+				part1 = values.GetRange(0, values.Count \ 2 + 1)
+				part2 = values.GetRange(values.Count \ 2, values.Count \ 2 + 1)
 			End If
-            Return String.Format("({0}, {1})", _
-                                 GetMedian(part1), _
-                                 GetMedian(part2))
+			Return String.Format("({0}, {1})", GetMedian(part1), GetMedian(part2))
 		End Function
 	End Class
 End Namespace
